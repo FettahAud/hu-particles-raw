@@ -5,10 +5,14 @@ uniform float time;
 uniform float progress;
 uniform float opacity;
 varying vec2 vUv;
+varying vec3 vNormal;
 varying vec3 vPos;
 varying vec4 color;
+uniform vec3 lightDirection;
 varying vec3 viewDirection;
 varying vec3 sphereNormal;
+attribute float aScale;
+uniform float uPixelRatio;
 
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -137,17 +141,15 @@ void main() {
     float strengthL0 = 0.5;
 
     vUv = uv;
-    // make wave
-    // fix this line
-    // vec3 pos = lerp(position, initPos, 0.5);
-    // vec3 pos = initPos;
+
     vec3 pos1 = position;
     vec3 pos2 = initPos;
     vec3 pos = mix(pos1, pos2, progress);
     sphereNormal = normalize(pos);
-//   pos += sin(pos.x * 10.0 + time) * 0.05;
-    // float noiseValue = classicPerlinNoise(pos1 + vec3(time * 0.25));
-// I want to mix pos and pos1 in noiseValue
+    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    float nDotL = clamp(dot(lightDirection, sphereNormal), 0.0, 1.0);
+    vec4 diffuseColor = vec4(lightColor, 1.0) * vec4(vec3(1.,0.,0.), 1.0) * nDotL;
+
     float noiseValue1 = classicPerlinNoise(pos + vec3(time * 0.25));
     float noiseValue2 = classicPerlinNoise(pos1 + vec3(time * 0.25));
     float noiseValue = mix(noiseValue1, noiseValue2, .6);
@@ -166,10 +168,14 @@ void main() {
     float noiseL4 = (sin(angle * 2.5 + time * speed + 1.0) + 1.0) / 2.0;
     float noiseL5 = (sin(pos.y * 1.0 + time + 1.0) + 1.0) / 2.0;
     float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
-    vec2 verticalWave = vec2(noise) * direction;
-
+    vec2 verticalWave = vec2(noise) * direction*2.;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
-    gl_PointSize = max(random(pos.yx), 0.75) * 4.71;
+    vec3 newPosition = position;
+    vec4 modelPosition = vec4(newPosition, 1.0);
+
+    vec4 viewPosition = viewMatrix * modelPosition;
+    gl_PointSize = 144. * aScale * uPixelRatio;
+    gl_PointSize *= 0.3 / -viewPosition.z;
 
     vec4 localPosition = vec4(position, 1.0);
     vec4 worldPosition = modelMatrix * localPosition;
@@ -177,13 +183,10 @@ void main() {
     viewDirection = look;
 
     vec4 noiseColorModifier = vec4(1.0 - noise);
-    // vec4 color1 = vec4(1.0, .0, .5, .8) * noiseColorModifier; // cyan
-    // I need cyan color
     vec4 color1 = vec4(0.0, 1.0, 1.0, .8) * noiseColorModifier; // cyan
-    vec4 color2 = vec4(1.0, 1.0, 1.0, .2) * noiseColorModifier; // white
+    vec4 color2 = vec4(.2, .2, .2, 1.) * noiseColorModifier; // white
     // use noise as mix factor
-    color = mix(color1, color2, 1.0 - pow(min(abs(noiseValue * 2.5), 1.), 10.)) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
-
+    color = mix(color1, color2+nDotL, 1.0 - pow(min(abs(noiseValue * 2.5), 1.), 10.)) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
 
 }
     //   #include <fog_vertex>

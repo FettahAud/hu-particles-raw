@@ -1,7 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -52,11 +51,10 @@ scene.background = new THREE.Color("#000");
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
-  12,
+  12.981,
   window.innerWidth / window.innerHeight,
-  0.1,
-  100000
-);
+  0.01,
+  1000000);
 camera.position.set(0, 0, 15);
 
 // Create a renderer
@@ -77,6 +75,7 @@ const getPointsOnModel = (modal) => {
   const data = modal.geometry.attributes.position.array;
   const data2 = new Float32Array(3 * SIZE * SIZE);
   const pointSizes = new Float32Array(number);
+  const scaleArray = new Float32Array(number);
 
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
@@ -89,18 +88,23 @@ const getPointsOnModel = (modal) => {
       data2[3 * index + 0] = (Math.random() - 0.5) * 15;
       data2[3 * index + 1] = (Math.random() - 0.5) * 15;
       data2[3 * index + 2] = (Math.random() - 0.5) * 15;
+
+      scaleArray[index] = Math.random();
+
     }
   }
 
-  return { data, data2 };
+  return { data, data2,scaleArray };
 };
 
 const loader = new GLTFLoader();
 loader.load("model.glb", (gltf) => {
-  const { data, data2 } = getPointsOnModel(gltf.scene.children[0]);
+  const { data, data2,scaleArray } = getPointsOnModel(gltf.scene.children[0]);
 
   geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(data2, 3));
+  geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1));
+
   geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
   // const material = new THREE.PointsMaterial({ size: 0.05 });
   material = new THREE.ShaderMaterial({
@@ -108,6 +112,10 @@ loader.load("model.glb", (gltf) => {
       time: { value: 0 },
       progress: { value: 0 },
       opacity: { value: 0 },
+      lightDirection: { value: new THREE.Vector3(.0, .0, -.1).normalize() },
+
+      uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+
       ...THREE.UniformsLib['fog'],
 
     },
@@ -116,11 +124,11 @@ loader.load("model.glb", (gltf) => {
     vertexShader: vertex,
     fragmentShader: fragment,
     transparent: true,
-    depthWrite: false,
+    depthWrite: true,
     // alphaTest: 0.5,
-    depthTest: false,
+    depthTest: true,
     sizeAttenuation: true,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NoBlending,
   });
 
   points = new THREE.Points(geometry, material);
@@ -129,9 +137,9 @@ loader.load("model.glb", (gltf) => {
 });
 
 // Add orbit controls
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-scene.fog = new THREE.Fog( 0x000000, 12, 22 );
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping = true;
+// scene.fog = new THREE.Fog( 0x000000, 5,15);
 
 // Animation loop
 function animate() {

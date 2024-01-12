@@ -24,7 +24,7 @@ void main() {
       float fresnel = fresnelEffect(sphereNormal, viewDirection, 20.0);
       vec4 fresnelColor = vec4(fresnel * 10.0, fresnel * 50.0, fresnel * 90.0, 0.0);
       //float viewDot = dot(sphereNormal, viewDirection);
-      gl_FragColor = color+fresnelColor ;
+      gl_FragColor = color ;
      #include <fog_fragment>
 
     // gl_FragColor = finalColor;
