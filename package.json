@@ -10,9 +10,10 @@
   },
   "devDependencies": {
     "vite": "^4.4.5",
-    "vite-plugin-glsl": "^1.1.2"
+    "vite-plugin-glsl": "^1.2.1"
   },
   "dependencies": {
+    "glsl": "^0.0.1",
     "glsl-curl-noise2": "^0.0.4",
     "glsl-noise": "^0.0.0",
     "glslify": "^7.1.1",

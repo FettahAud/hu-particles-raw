@@ -1,8 +1,8 @@
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,8 +43,8 @@ ScrollTrigger.create({
   },
 });
 
-import vertex from "./shaders/vertex.glsl";
 import fragment from "./shaders/fragment.glsl";
+import vertex from "./shaders/vertex.glsl";
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -52,12 +52,12 @@ scene.background = new THREE.Color("#000");
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  12,
   window.innerWidth / window.innerHeight,
   0.1,
-  30
+  100000
 );
-camera.position.set(0, 0, 3);
+camera.position.set(0, 0, 15);
 
 // Create a renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
@@ -106,12 +106,13 @@ loader.load("model.glb", (gltf) => {
   material = new THREE.ShaderMaterial({
     uniforms: {
       time: { value: 0 },
-      fogColor: new THREE.Color(0x000000),
-      fogNear: 15,
-      fogFar: 13,
       progress: { value: 0 },
       opacity: { value: 0 },
+      ...THREE.UniformsLib['fog'],
+
     },
+    fog:true,
+
     vertexShader: vertex,
     fragmentShader: fragment,
     transparent: true,
@@ -128,8 +129,9 @@ loader.load("model.glb", (gltf) => {
 });
 
 // Add orbit controls
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+scene.fog = new THREE.Fog( 0x000000, 12, 22 );
 
 // Animation loop
 function animate() {

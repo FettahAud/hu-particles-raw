@@ -1,4 +1,4 @@
- #include <fog_pars_fragment>
+#include <fog_pars_vertex>
 
 attribute vec3 initPos;
 uniform float time;
@@ -129,6 +129,9 @@ float sampleColor(float time, vec3 position, float pointsCount) {
 }
 
 void main() {
+    #include <begin_vertex>
+    #include <project_vertex>
+    #include <fog_vertex>
 
     float speed = 2.0;
     float strengthL0 = 0.5;
@@ -183,3 +186,4 @@ void main() {
 
 
 }
+    //   #include <fog_vertex>
