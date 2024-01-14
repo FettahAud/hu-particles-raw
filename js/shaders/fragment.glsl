@@ -1,16 +1,15 @@
 
-#include <fog_pars_fragment>
 
- varying vec2 vUv;
+varying vec2 vUv;
 uniform float time;
 varying vec3 sphereNormal;
 varying vec3 vPos;
 varying vec4 color;
 varying vec3 viewDirection;
 uniform float opacity;
-uniform vec3 fogColor;
-uniform float fogNear;
-uniform float fogFar;
+    uniform vec3 fogColor;
+    uniform float fogNear;
+    uniform float fogFar;
 
 float fresnelEffect(vec3 Normal, vec3 ViewDir, float Power)
 {
@@ -19,11 +18,14 @@ float fresnelEffect(vec3 Normal, vec3 ViewDir, float Power)
 }
 
 void main() {      
+
     float dist = length(gl_PointCoord - vec2(0.5));
     if (dist > 0.5) {
     discard;
     }
 
+      float depth = gl_FragCoord.z / gl_FragCoord.w;
+      float fogFactor = smoothstep(fogNear, fogFar, depth);
 
       float fresnel = fresnelEffect(sphereNormal, viewDirection, 5.0);
       vec4 fresnelColor = vec4(fresnel * 10.0, fresnel * 20.0, fresnel * 20.0, 0.0);
@@ -32,9 +34,10 @@ void main() {
 
       vec4 finalColor = mix(color, transparentColor, 1.0 - opacity);
 
-      // gl_FragColor = finalColor + fresnelColor; // this frensel makes side of the sphere all white
-      gl_FragColor = finalColor;
-     #include <fog_fragment>
+
+       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor , fogFactor);
+      
+          //    gl_FragColor = mix( finalColor, vec4(fogColor, 1.0), fogFactor );
 
     // gl_FragColor = finalColor;
 }

@@ -1,4 +1,3 @@
-#include <fog_pars_vertex>
 
 attribute vec3 initPos;
 uniform float time;
@@ -13,9 +12,6 @@ varying vec3 viewDirection;
 varying vec3 sphereNormal;
 attribute float aScale;
 uniform float uPixelRatio;
-uniform vec3 fogColor;
-uniform float fogNear;
-uniform float fogFar;
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -137,7 +133,6 @@ float sampleColor(float time, vec3 position, float pointsCount) {
 void main() {
     #include <begin_vertex>
     #include <project_vertex>
-    #include <fog_vertex>
 
     float speed = 3.0;
     float strengthL0 = 0.5;
@@ -192,6 +187,4 @@ void main() {
     // vec4 color2 = vec4(1.0, 1.0, 1.0, 1.) * noiseColorModifier; // white
     color = mix(color1, color1, 1.0 ) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
 
-
 }
-      #include <fog_vertex>
