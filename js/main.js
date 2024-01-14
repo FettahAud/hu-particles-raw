@@ -137,6 +137,7 @@ loader.load("model.glb", (gltf) => {
 });
 
 // Add orbit controls
+
 // const controls = new OrbitControls(camera, renderer.domElement);
 // controls.enableDamping = true;
 // scene.fog = new THREE.Fog( 0x000000, 5,15);
