@@ -13,7 +13,9 @@ varying vec3 viewDirection;
 varying vec3 sphereNormal;
 attribute float aScale;
 uniform float uPixelRatio;
-
+uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -137,9 +139,9 @@ void main() {
     #include <project_vertex>
     #include <fog_vertex>
 
-    float speed = 2.0;
+    float speed = 3.0;
     float strengthL0 = 0.5;
-
+    float posStrength = 0.25;
     vUv = uv;
 
     vec3 pos1 = position;
@@ -152,41 +154,44 @@ void main() {
 
     float noiseValue1 = classicPerlinNoise(pos + vec3(time * 0.25));
     float noiseValue2 = classicPerlinNoise(pos1 + vec3(time * 0.25));
-    float noiseValue = mix(noiseValue1, noiseValue2, .6);
+    float noiseValue = mix(noiseValue1, noiseValue2, posStrength);
 
 
     vec2 direction = vec2(pos.x, pos.z);
-    float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-    direction /= vec2(length);
+    float lengthF = sqrt(direction.x * direction.x + direction.y * direction.y);
+    direction /= vec2(lengthF);
     float angle = atan2(direction.y, direction.x);
 
-    float noiseL0 = (sin(angle * 5.0 - pos.y * 2.5) + 1.0) / 2.0 * strengthL0;
-    float noiseL1 = (sin(angle * 2.5 + time * speed) + 1.0) / 2.0;
+    float noiseL0 = (sin(angle * 10.0 - pos.y * 2.5) + 1.0) / 2.0 * strengthL0;
+    float noiseL1 = (sin(angle * 5. + time * speed) + 1.0) / 2.0;
     float noiseL2 = (sin(pos.y * 1.0 + time) + 1.0) / 2.0;
 
-    float noiseL3 = (sin(angle * 5.0 - pos.y * 2.5 + 1.0) + 1.0) / 2.0 * strengthL0;
-    float noiseL4 = (sin(angle * 2.5 + time * speed + 1.0) + 1.0) / 2.0;
+    float noiseL3 = (sin(angle * 10. - pos.y * 2.5 + 1.0) + 1.0) / 2.0 * strengthL0;
+    float noiseL4 = (sin(angle * 5. + time * speed + 1.0) + 1.0) / 2.0;
     float noiseL5 = (sin(pos.y * 1.0 + time + 1.0) + 1.0) / 2.0;
     float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
     vec2 verticalWave = vec2(noise) * direction*2.;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
+    // gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     vec3 newPosition = position;
     vec4 modelPosition = vec4(newPosition, 1.0);
 
     vec4 viewPosition = viewMatrix * modelPosition;
     gl_PointSize = 144. * aScale * uPixelRatio;
-    gl_PointSize *= 0.3 / -viewPosition.z;
+    gl_PointSize *= 0.05;
+    // gl_PointSize = max(random(pos.yx), 0.5) * 7.71;
 
     vec4 localPosition = vec4(position, 1.0);
     vec4 worldPosition = modelMatrix * localPosition;
     vec3 look = normalize(vec3(cameraPosition) - vec3(worldPosition));
     viewDirection = look;
 
-    vec4 noiseColorModifier = vec4(1.0 - noise);
-    vec4 color1 = vec4(0.0, 1.0, 1.0, .8) * noiseColorModifier; // cyan
-    vec4 color2 = vec4(.2, .2, .2, 1.) * noiseColorModifier; // white
-    // use noise as mix factor
-    color = mix(color1, color2+nDotL, 1.0 - pow(min(abs(noiseValue * 2.5), 1.), 10.)) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
+   vec4 noiseColorModifier = vec4(1.0 - noise);
+    vec4 color1 = vec4(0.0, 1.0, 1.0, 1.); // cyan
+    vec4 color2 = vec4(0.5, 0.5, 0.5, .8); // gray
+    // vec4 color2 = vec4(1.0, 1.0, 1.0, 1.) * noiseColorModifier; // white
+    color = mix(color1, color1, 1.0 ) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
+
 
 }
-    //   #include <fog_vertex>
+      #include <fog_vertex>
