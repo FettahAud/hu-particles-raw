@@ -134,7 +134,7 @@ void main() {
     #include <begin_vertex>
     #include <project_vertex>
 
-    float speed = 3.0;
+    float speed = 2.5;
     float strengthL0 = 0.5;
     float posStrength = 0.25;
     vUv = uv;
@@ -166,8 +166,7 @@ void main() {
     float noiseL5 = (sin(pos.y * 1.0 + time + 1.0) + 1.0) / 2.0;
     float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
     vec2 verticalWave = vec2(noise) * direction*2.;
-    // gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
     vec3 newPosition = position;
     vec4 modelPosition = vec4(newPosition, 1.0);
 
@@ -181,10 +180,11 @@ void main() {
     vec3 look = normalize(vec3(cameraPosition) - vec3(worldPosition));
     viewDirection = look;
 
-   vec4 noiseColorModifier = vec4(1.0 - noise);
-    vec4 color1 = vec4(0.0, 1.0, 1.0, 1.); // cyan
-    vec4 color2 = vec4(0.5, 0.5, 0.5, .8); // gray
-    // vec4 color2 = vec4(1.0, 1.0, 1.0, 1.) * noiseColorModifier; // white
-    color = mix(color1, color1, 1.0 ) /* vec4(dot(look, position)) * vec4(noise + 0.5)*/;
+    vec4 noiseColorModifier = vec4(1.0 - noise);
+    vec4 color1 = vec4(0.0, 1.0, 1.0, .7); // cyan
+    vec4 color2 = vec4(0.5, 0.5, 0.5, .5); // gray
+
+    color = mix(color1, color2, 1.0 - pow(min(abs(noiseValue * 2.5), 1.), 10.));    
+
 
 }

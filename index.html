@@ -13,9 +13,29 @@
         overflow-x: hidden;
         background-color: black;
       }
-      canvas {
+      .canvas-wrapper {
+        position: relative;
         width: 100%;
         height: 100vh;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      .text-bubble {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1rem;
+        border-radius: 1rem;
+        color: #00ffe0;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: hsla(0, 0%, 100%, 0.1);
+        backdrop-filter: blur(10px);
+        max-width: 230px;
+        text-wrap: wrap;
       }
       section {
         height: 100vh;
@@ -27,7 +47,13 @@
   </head>
   <body>
     <section class="section first-section">Test</section>
-    <canvas id="canvas"></canvas>
+    <div class="canvas-wrapper">
+      <canvas id="canvas"></canvas>
+      <!-- <div class="text-bubble">Should I engage this prospect</div>
+      <div class="text-bubble">Yes its from Ideal customer profile</div>
+      <div class="text-bubble">Tell me more about the prospect</div>
+      <div class="text-bubble">Have shared the prospect insights</div> -->
+    </div>
     <section class="section">
       <button>red</button>
     </section>
