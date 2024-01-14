@@ -26,20 +26,76 @@ window.addEventListener("scroll", () => {
   // targetRotation = (normalizedScrollPos * Math.PI) / 2;
 });
 
+const bubblesTl = gsap.timeline({
+  paused: true,
+});
+bubblesTl
+  .fromTo(
+    ".bubble-1",
+    {
+      opacity: 0,
+      y: 100,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.25,
+    }
+  )
+  .fromTo(
+    ".bubble-2",
+    {
+      opacity: 0,
+      y: 100,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.25,
+    }
+  )
+  .fromTo(
+    ".bubble-3",
+    {
+      opacity: 0,
+      y: 100,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.25,
+    }
+  )
+  .fromTo(
+    ".bubble-4",
+    {
+      opacity: 0,
+      y: 100,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.25,
+    }
+  );
+
 ScrollTrigger.create({
   trigger: canvasWrapper,
   pin: true,
-  end: "400%",
-  markers: true,
+  end: "600%",
+  markers: false,
   onUpdate: (self) => {
     const progress = self.progress;
     targetRotation = progress * (Math.PI / 2);
     transProgress = Math.min(1, progress * 2);
     opacity = Math.min(1, progress * 8);
-    console.log(opacity);
     if (material) {
       material.uniforms.progress.value = transProgress;
       material.uniforms.opacity.value = opacity;
+    }
+    if (progress > 0.4 && progress < 0.9) {
+      const fadeProgress = (progress - 0.4) / 0.5;
+      bubblesTl.progress(fadeProgress);
     }
   },
 });
@@ -77,7 +133,6 @@ scene.add(spotLight);
 const getPointsOnModel = (modal) => {
   const data = modal.geometry.attributes.position.array;
   const data2 = new Float32Array(3 * SIZE * SIZE);
-  const pointSizes = new Float32Array(number);
   const scaleArray = new Float32Array(number);
 
   for (let i = 0; i < SIZE; i++) {
@@ -105,9 +160,10 @@ loader.load("model.glb", (gltf) => {
 
   geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(data2, 3));
+  geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
+
   geometry.setAttribute("aScale", new THREE.BufferAttribute(scaleArray, 1));
 
-  geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
   // const material = new THREE.PointsMaterial({ size: 0.05 });
   material = new THREE.ShaderMaterial({
     uniforms: {

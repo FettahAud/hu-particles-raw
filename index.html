@@ -36,27 +36,38 @@
         backdrop-filter: blur(10px);
         max-width: 230px;
         text-wrap: wrap;
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        opacity: 0;
       }
       section {
         height: 100vh;
         background-color: black;
         color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     </style>
     <title>Hue particles</title>
   </head>
   <body>
-    <section class="section first-section">Test</section>
+    <section class="section first-section">Hello People</section>
     <div class="canvas-wrapper">
       <canvas id="canvas"></canvas>
-      <!-- <div class="text-bubble">Should I engage this prospect</div>
-      <div class="text-bubble">Yes its from Ideal customer profile</div>
-      <div class="text-bubble">Tell me more about the prospect</div>
-      <div class="text-bubble">Have shared the prospect insights</div> -->
+      <div class="text-bubble bubble-1" style="top: 26%; left: 33%">
+        Should I engage this prospect
+      </div>
+      <div class="text-bubble bubble-2" style="top: 37%; left: 60%">
+        Yes its from Ideal customer profile
+      </div>
+      <div class="text-bubble bubble-3" style="top: 54%; left: 36%">
+        Tell me more about the prospect
+      </div>
+      <div class="text-bubble bubble-4" style="top: 70%; left: 62%">
+        Have shared the prospect insights
+      </div>
     </div>
-    <section class="section">
-      <button>red</button>
-    </section>
+    <section class="section">The end.</section>
     <script type="module" src="./js/main.js"></script>
   </body>
 </html>
