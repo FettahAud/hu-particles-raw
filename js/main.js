@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +55,8 @@ const camera = new THREE.PerspectiveCamera(
   12.981,
   window.innerWidth / window.innerHeight,
   0.01,
-  1000000);
+  1000000
+);
 camera.position.set(0, 0, 15);
 
 // Create a renderer
@@ -74,36 +76,34 @@ scene.add(spotLight);
 const getPointsOnModel = (modal) => {
   const data = modal.geometry.attributes.position.array;
   const data2 = new Float32Array(3 * SIZE * SIZE);
-  const pointSizes = new Float32Array(number);
   const scaleArray = new Float32Array(number);
 
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
       const index = i * SIZE + j;
 
-      data[3 * index] = data[3 * index] + Math.random() * 0.05;
-      data[3 * index + 1] = data[3 * index + 1] + Math.random() * 0.05;
-      data[3 * index + 2] = data[3 * index + 2] + Math.random() * 0.05;
+      data[3 * index] = data[3 * index] + Math.random() * 0.1;
+      data[3 * index + 1] = data[3 * index + 1] + Math.random() * 0.01;
+      data[3 * index + 2] = data[3 * index + 2] + Math.random() * 0.01;
 
       data2[3 * index + 0] = (Math.random() - 0.5) * 15;
       data2[3 * index + 1] = (Math.random() - 0.5) * 15;
       data2[3 * index + 2] = (Math.random() - 0.5) * 15;
 
       scaleArray[index] = Math.random();
-
     }
   }
 
-  return { data, data2,scaleArray };
+  return { data, data2, scaleArray };
 };
 
 const loader = new GLTFLoader();
 loader.load("model.glb", (gltf) => {
-  const { data, data2,scaleArray } = getPointsOnModel(gltf.scene.children[0]);
+  const { data, data2, scaleArray } = getPointsOnModel(gltf.scene.children[0]);
 
   geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(data2, 3));
-  geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1));
+  geometry.setAttribute("aScale", new THREE.BufferAttribute(scaleArray, 1));
 
   geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
   // const material = new THREE.PointsMaterial({ size: 0.05 });
@@ -112,35 +112,47 @@ loader.load("model.glb", (gltf) => {
       time: { value: 0 },
       progress: { value: 0 },
       opacity: { value: 0 },
-      lightDirection: { value: new THREE.Vector3(.0, .0, -.1).normalize() },
+      lightDirection: { value: new THREE.Vector3(0.0, 0.0, -0.1).normalize() },
 
       uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
 
-      ...THREE.UniformsLib['fog'],
-
+      ...THREE.UniformsLib["fog"],
+      fogColor: { value: new THREE.Color(0x000000) },
+      fogNear: { value: 15 },
+      fogFar: { value: 13 },
     },
-    fog:true,
+    fog: true,
 
     vertexShader: vertex,
     fragmentShader: fragment,
-    transparent: true,
+    transparent: false,
     depthWrite: true,
     // alphaTest: 0.5,
-    depthTest: true,
-    sizeAttenuation: true,
-    blending: THREE.NoBlending,
+    depthTest: transProgress,
+    sizeAttenuation: false,
+    blending: THREE.CustomBlending,
+    blendEquation: THREE.AddEquation,
+    blendSrc: THREE.SrcAlphaFactor,
+    blendDst: THREE.OneMinusSrcAlphaFactor,
   });
 
   points = new THREE.Points(geometry, material);
   points.rotation.y = -Math.PI / 2;
+  points.sortParticles = true;
   scene.add(points);
 });
 
 // Add orbit controls
+<<<<<<< HEAD
 
 // const controls = new OrbitControls(camera, renderer.domElement);
 // controls.enableDamping = true;
 // scene.fog = new THREE.Fog( 0x000000, 5,15);
+=======
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+// scene.fog = new THREE.Fog(0x000000, 5, 15);
+>>>>>>> 459ded191bf55ac02e66dac653b46c48ea75d8df
 
 // Animation loop
 function animate() {
