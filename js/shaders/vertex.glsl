@@ -136,9 +136,9 @@ void main() {
     #include <begin_vertex>
     #include <project_vertex>
 
-    float speed = 2.5;
+    float speed = 1.;
     float strengthL0 = 0.5;
-    float posStrength = 0.25;
+    float posStrength = 0.7;
     vUv = uv;
 
     vec3 pos1 = position;
@@ -152,8 +152,8 @@ void main() {
     float nDotL = clamp(dot(lightDirection, sphereNormal), 0.0, 1.0);
     vec4 diffuseColor = vec4(lightColor, 1.0) * vec4(vec3(1.,0.,0.), 1.0) * nDotL;
 
-    float noiseValue1 = classicPerlinNoise(pos + vec3(time * 0.25));
-    float noiseValue2 = classicPerlinNoise(pos1 + vec3(time * 0.25));
+    float noiseValue1 = classicPerlinNoise(pos1 + vec3(time * 0.25));
+    float noiseValue2 = classicPerlinNoise(pos2 + vec3(time * 0.25));
     float noiseValue = mix(noiseValue1, noiseValue2, posStrength);
 
 
@@ -177,7 +177,7 @@ void main() {
 
     vec4 viewPosition = viewMatrix * modelPosition;
     gl_PointSize = 144. * aScale * uPixelRatio;
-    gl_PointSize *= 0.05;
+    gl_PointSize *= 0.025;
     // gl_PointSize = max(random(pos.yx), 0.5) * 7.71;
 
     vec4 localPosition = vec4(position, 1.0);
