@@ -29,7 +29,7 @@ void main() {
 
 
     vec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));
-    float specularStrength = 21.0; // Adjust the strength of the reflection
+    float specularStrength = 14.0; // Adjust the strength of the reflection
 
     vec3 reflected = reflect(viewDirection, sphereNormalF);
     float specular = pow(max(dot(reflected, normalize(cameraPosition - vViewPosition)), 0.0), 16.0);
@@ -44,7 +44,7 @@ void main() {
       vec4 finalColor = mix(color, transparentColor, 1.0 - opacity);
 
         vec4 shine = vec4(vec3(specularStrength) * specular,1.);
-       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor+shine , fogFactor);
+       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor , fogFactor);
 
 
     // gl_FragColor = finalColor;
