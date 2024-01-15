@@ -134,7 +134,7 @@ void main() {
     #include <begin_vertex>
     #include <project_vertex>
 
-    float speed = 2.5;
+    float speed = 1.;
     float strengthL0 = 0.5;
     float posStrength = 0.7;
     vUv = uv;
