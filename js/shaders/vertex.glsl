@@ -14,6 +14,7 @@ varying vec3 sphereNormalF;
 
 attribute float aScale;
 uniform float uPixelRatio;
+varying vec3 vViewPosition;
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -36,7 +37,7 @@ vec4 taylorInvSqrt(vec4 r) {
 }
 
 
-float classicPerlinNoise(vec3 P) {
+ float classicPerlinNoise(vec3 P) {
 // Hash function
 vec3 Pi0 = floor(P); // Integer part for indexing
 vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
@@ -175,7 +176,14 @@ void main() {
     vec3 newPosition = position;
     vec4 modelPosition = vec4(newPosition, 1.0);
 
+
+
+
+
     vec4 viewPosition = viewMatrix * modelPosition;
+
+
+
     gl_PointSize = 144. * aScale * uPixelRatio;
     gl_PointSize *= 0.025;
     // gl_PointSize = max(random(pos.yx), 0.5) * 7.71;
@@ -184,6 +192,10 @@ void main() {
     vec4 worldPosition = modelMatrix * localPosition;
     vec3 look = normalize(vec3(cameraPosition) - vec3(worldPosition));
     viewDirection = look;
+
+    vViewPosition = -worldPosition.xyz;
+
+
 
     vec4 noiseColorModifier = vec4(1.0 - noise);
     vec4 color1 = vec4(0.0, 1.0, 1.0, .7); // cyan

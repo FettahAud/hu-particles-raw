@@ -10,6 +10,7 @@ uniform float opacity;
     uniform vec3 fogColor;
     uniform float fogNear;
     uniform float fogFar;
+varying vec3 vViewPosition;
 
 float fresnelEffect(vec3 Normal, vec3 ViewDir, float Power)
     {
@@ -26,6 +27,15 @@ void main() {
       float depth = gl_FragCoord.z / gl_FragCoord.w;
       float fogFactor = smoothstep(fogNear, fogFar, depth);
 
+
+    vec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));
+    float specularStrength = 1.0; // Adjust the strength of the reflection
+
+    vec3 reflected = reflect(viewDirection, sphereNormalF);
+    float specular = pow(max(dot(reflected, normalize(cameraPosition - vViewPosition)), 0.0), 16.0);
+
+
+
       float fresnel = fresnelEffect(sphereNormalF, viewDirection, 20.0);
       vec4 fresnelColor = vec4(fresnel * 10.0, fresnel * 50.0, fresnel * 90.0, 0.0);
       // This is to hide the points when we are up
@@ -33,10 +43,9 @@ void main() {
 
       vec4 finalColor = mix(color, transparentColor, 1.0 - opacity);
 
+        vec4 shine = vec4(vec3(specularStrength) * specular,1.);
+       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor+shine , fogFactor);
 
-       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor , fogFactor);
-      
-          //    gl_FragColor = mix( finalColor, vec4(fogColor, 1.0), fogFactor );
 
     // gl_FragColor = finalColor;
 }
