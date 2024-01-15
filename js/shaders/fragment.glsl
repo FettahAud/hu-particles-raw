@@ -2,7 +2,7 @@
 
 varying vec2 vUv;
 uniform float time;
-varying vec3 sphereNormal;
+varying vec3 sphereNormalF;
 varying vec3 vPos;
 varying vec4 color;
 varying vec3 viewDirection;
@@ -12,10 +12,9 @@ uniform float opacity;
     uniform float fogFar;
 
 float fresnelEffect(vec3 Normal, vec3 ViewDir, float Power)
-{
-  float t = dot(normalize(Normal), normalize(ViewDir));
-    return pow((1.0 - (t)), Power);
-}
+    {
+        return pow((1.0 - (dot(normalize(Normal), normalize(ViewDir)))), Power);
+    }
 
 void main() {      
 
@@ -27,8 +26,8 @@ void main() {
       float depth = gl_FragCoord.z / gl_FragCoord.w;
       float fogFactor = smoothstep(fogNear, fogFar, depth);
 
-      float fresnel = fresnelEffect(sphereNormal, viewDirection, 5.0);
-      vec4 fresnelColor = vec4(fresnel * 10.0, fresnel * 20.0, fresnel * 20.0, 0.0);
+      float fresnel = fresnelEffect(sphereNormalF, viewDirection, 20.0);
+      vec4 fresnelColor = vec4(fresnel * 10.0, fresnel * 50.0, fresnel * 90.0, 0.0);
       // This is to hide the points when we are up
       vec4 transparentColor = vec4(0.0, 0.0, 0.0, 0.0); // Transparent color
 

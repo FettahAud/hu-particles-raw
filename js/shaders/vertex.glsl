@@ -10,6 +10,8 @@ varying vec4 color;
 uniform vec3 lightDirection;
 varying vec3 viewDirection;
 varying vec3 sphereNormal;
+varying vec3 sphereNormalF;
+
 attribute float aScale;
 uniform float uPixelRatio;
 
@@ -143,6 +145,9 @@ void main() {
     vec3 pos2 = initPos;
     vec3 pos = mix(pos1, pos2, progress);
     sphereNormal = normalize(pos);
+
+    sphereNormalF=normalize(pos1);
+
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
     float nDotL = clamp(dot(lightDirection, sphereNormal), 0.0, 1.0);
     vec4 diffuseColor = vec4(lightColor, 1.0) * vec4(vec3(1.,0.,0.), 1.0) * nDotL;
