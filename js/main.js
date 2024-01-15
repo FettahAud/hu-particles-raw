@@ -3,6 +3,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
+import fragment from "./shaders/fragment.glsl";
+import vertex from "./shaders/vertex.glsl";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,6 +49,11 @@ bubblesTl
       duration: 0.25,
     }
   )
+  .to(".question-1", {
+    opacity: 0,
+    y: -100,
+    duration: 0.25,
+  })
   .fromTo(
     ".bubble-3",
     {
@@ -69,7 +77,12 @@ bubblesTl
       y: 0,
       duration: 0.25,
     }
-  );
+  )
+  .to(".question-2", {
+    opacity: 0,
+    y: -100,
+    duration: 0.25,
+  });
 
 ScrollTrigger.create({
   trigger: canvasWrapper,
@@ -92,8 +105,10 @@ ScrollTrigger.create({
   },
 });
 
-import fragment from "./shaders/fragment.glsl";
-import vertex from "./shaders/vertex.glsl";
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -102,16 +117,37 @@ scene.background = new THREE.Color("#000");
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
   12.981,
-  window.innerWidth / window.innerHeight,
+  sizes.width / sizes.height,
   0.01,
   1000000
 );
+if (window.innerWidth < 768) camera.fov = 30;
+else camera.fov = 12.981;
 camera.position.set(0, 0, 15);
 
 // Create a renderer
-const renderer = new THREE.WebGLRenderer({ canvas });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.toneMappingExposure = 3;
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-renderer.setSize(window.innerWidth, window.innerHeight);
+window.addEventListener("resize", () => {
+  // Update sizes
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  if (window.innerWidth < 768) camera.fov = 30;
+  else camera.fov = 12.981;
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
 
 // Add a spotlight
 const spotLight = new THREE.SpotLight(0xffffff, 1);
@@ -152,7 +188,6 @@ loader.load("model.glb", (gltf) => {
   geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(data2, 3));
   geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
-  console.log(geometry.attributes.position);
 
   geometry.setAttribute("aScale", new THREE.BufferAttribute(scaleArray, 1));
 
@@ -181,6 +216,7 @@ loader.load("model.glb", (gltf) => {
 
   points = new THREE.Points(geometry, material);
   points.rotation.y = -Math.PI / 2;
+  points.position.z = 0;
   scene.add(points);
 });
 

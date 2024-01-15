@@ -22,23 +22,28 @@
         width: 100%;
         height: 100%;
       }
-      .text-bubble {
+      .question {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+      }
+      .text-bubble {
+        position: absolute;
         padding: 1rem;
         border-radius: 1rem;
         color: #00ffe0;
         font-size: 16px;
         font-weight: bold;
         background-color: hsla(0, 0%, 100%, 0.1);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(30px);
         max-width: 230px;
         text-wrap: wrap;
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        opacity: 0;
       }
       section {
         height: 100vh;
@@ -55,17 +60,21 @@
     <section class="section first-section">Hello People</section>
     <div class="canvas-wrapper">
       <canvas id="canvas"></canvas>
-      <div class="text-bubble bubble-1" style="top: 26%; left: 33%">
-        Should I engage this prospect
+      <div class="question question-1">
+        <div class="text-bubble bubble-1" style="top: 26%; left: 28%">
+          Should I engage this prospect
+        </div>
+        <div class="text-bubble bubble-2" style="top: 38%; left: 58%">
+          Yes its from Ideal customer profile
+        </div>
       </div>
-      <div class="text-bubble bubble-2" style="top: 37%; left: 60%">
-        Yes its from Ideal customer profile
-      </div>
-      <div class="text-bubble bubble-3" style="top: 54%; left: 36%">
-        Tell me more about the prospect
-      </div>
-      <div class="text-bubble bubble-4" style="top: 70%; left: 62%">
-        Have shared the prospect insights
+      <div class="question question-2">
+        <div class="text-bubble bubble-3" style="top: 36%; left: 28%">
+          Tell me more about the prospect
+        </div>
+        <div class="text-bubble bubble-4" style="top: 48%; left: 58%">
+          Have shared the prospect insights
+        </div>
       </div>
     </div>
     <section class="section">The end.</section>
