@@ -2,12 +2,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const SIZE = 124 * 2;
 const number = SIZE * SIZE;
+const position = new THREE.Vector3();
 let geometry,
   material,
   points,
@@ -16,15 +17,6 @@ let geometry,
   opacity = 0;
 const canvas = document.getElementById("canvas");
 const canvasWrapper = document.querySelector(".canvas-wrapper");
-
-window.addEventListener("scroll", () => {
-  // const rect = console.log(canvas);
-  // const scrollPos = window.scrollY - rect.top * window.innerHeight; // Add the viewport height to scrollPos
-  // let normalizedScrollPos = scrollPos / (rect.height + window.innerHeight * 4); // Add the viewport height to the height of the canvas
-  // normalizedScrollPos = Math.max(0, Math.min(1, normalizedScrollPos));
-  // console.log(normalizedScrollPos);
-  // targetRotation = (normalizedScrollPos * Math.PI) / 2;
-});
 
 const bubblesTl = gsap.timeline({
   paused: true,
@@ -128,20 +120,19 @@ spotLight.angle = 0.1;
 spotLight.penumbra = 1;
 scene.add(spotLight);
 
-// Add particles
-
 const getPointsOnModel = (modal) => {
-  const data = modal.geometry.attributes.position.array;
+  const data = new Float32Array(3 * SIZE * SIZE);
+  const sampler = new MeshSurfaceSampler(modal).build();
   const data2 = new Float32Array(3 * SIZE * SIZE);
   const scaleArray = new Float32Array(number);
 
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
       const index = i * SIZE + j;
-
-      data[3 * index] = data[3 * index] + Math.random() * 0.05;
-      data[3 * index + 1] = data[3 * index + 1] + Math.random() * 0.05;
-      data[3 * index + 2] = data[3 * index + 2] + Math.random() * 0.05;
+      sampler.sample(position);
+      data[3 * index] = position.x;
+      data[3 * index + 1] = position.y;
+      data[3 * index + 2] = position.z;
 
       data2[3 * index + 0] = (Math.random() - 0.5) * 15;
       data2[3 * index + 1] = (Math.random() - 0.5) * 15;
@@ -161,10 +152,10 @@ loader.load("model.glb", (gltf) => {
   geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(data2, 3));
   geometry.setAttribute("initPos", new THREE.BufferAttribute(data, 3));
+  console.log(geometry.attributes.position);
 
   geometry.setAttribute("aScale", new THREE.BufferAttribute(scaleArray, 1));
 
-  // const material = new THREE.PointsMaterial({ size: 0.05 });
   material = new THREE.ShaderMaterial({
     uniforms: {
       time: { value: 0 },
