@@ -172,7 +172,7 @@ void main() {
 
     vec4 viewPosition = viewMatrix * modelPosition;
     gl_PointSize = 144. * aScale * uPixelRatio;
-    gl_PointSize *= 0.05;
+    gl_PointSize *= 0.025;
     // gl_PointSize = max(random(pos.yx), 0.5) * 7.71;
 
     vec4 localPosition = vec4(position, 1.0);

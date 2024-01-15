@@ -175,7 +175,7 @@ loader.load("model.glb", (gltf) => {
     depthWrite: true,
     // alphaTest: 0.5,
     depthTest: true,
-    sizeAttenuation: true,
+    sizeAttenuation: false,
     blending: THREE.NoBlending,
   });
 
