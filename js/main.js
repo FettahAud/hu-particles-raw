@@ -49,11 +49,15 @@ bubblesTl
       duration: 0.25,
     }
   )
-  .to(".question-1", {
-    opacity: 0,
-    y: -100,
-    duration: 0.25,
-  })
+  .to(
+    ".question-1",
+    {
+      opacity: 0,
+      y: -100,
+      duration: 0.5,
+    },
+    "+=0.25"
+  )
   .fromTo(
     ".bubble-3",
     {
@@ -78,27 +82,31 @@ bubblesTl
       duration: 0.25,
     }
   )
-  .to(".question-2", {
-    opacity: 0,
-    y: -100,
-    duration: 0.25,
-  });
+  .to(
+    ".question-2",
+    {
+      opacity: 0,
+      y: -100,
+      duration: 0.5,
+    },
+    "+=.25"
+  );
 
 ScrollTrigger.create({
   trigger: canvasWrapper,
   pin: true,
-  end: "600%",
+  end: "700%",
   markers: false,
   onUpdate: (self) => {
     const progress = self.progress;
     targetRotation = progress * (Math.PI / 2);
-    transProgress = Math.min(1, progress * 2);
+    transProgress = Math.min(1, progress * 2.5);
     opacity = Math.min(1, progress * 8);
     if (material) {
       material.uniforms.progress.value = transProgress;
       material.uniforms.opacity.value = opacity;
     }
-    if (progress > 0.4 && progress < 0.9) {
+    if (progress > 0.4 && progress < 0.95) {
       const fadeProgress = (progress - 0.4) / 0.5;
       bubblesTl.progress(fadeProgress);
     }
