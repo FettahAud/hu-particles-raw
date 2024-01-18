@@ -164,20 +164,34 @@ spotLight.angle = 0.1;
 spotLight.penumbra = 1;
 scene.add(spotLight);
 
+function createRandomParticle() {
+  return {
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    size: Math.random() * 5 + 1, // Size between 1 and 6
+    speedX: Math.random() * 3 - 1.5, // Speed between -1.5 and 1.5
+    speedY: Math.random() * 3 - 1.5,
+  };
+}
+
 const getPointsOnModel = (modal) => {
-  const data = new Float32Array(3 * SIZE * SIZE);
+  const data = new Float32Array(3 * SIZE * SIZE + 2000);
   const sampler = new MeshSurfaceSampler(modal).build();
   const data2 = new Float32Array(3 * SIZE * SIZE);
   const scaleArray = new Float32Array(number);
-
-  for (let i = 0; i < SIZE; i++) {
-    for (let j = 0; j < SIZE; j++) {
+  console.log(data.length);
+  for (let i = 0; i < SIZE + 100; i++) {
+    for (let j = 0; j < SIZE + 100; j++) {
       const index = i * SIZE + j;
       sampler.sample(position);
       data[3 * index] = position.x;
       data[3 * index + 1] = position.y;
       data[3 * index + 2] = position.z;
-
+      if (index >= SIZE * SIZE - 2000) {
+        data[3 * index] = (Math.random() - 0.5) * 10;
+        data[3 * index + 1] = (Math.random() - 0.5) * 10;
+        data[3 * index + 2] = (Math.random() - 0.5) * 10;
+      }
       data2[3 * index + 0] = (Math.random() - 0.5) * 15;
       data2[3 * index + 1] = (Math.random() - 0.5) * 15;
       data2[3 * index + 2] = (Math.random() - 0.5) * 15;
