@@ -170,7 +170,12 @@ void main() {
     float noiseL3 = (sin(angle * 10. - pos.y * 2.5 + 1.0) + 1.0) / 2.0 * strengthL0;
     float noiseL4 = (sin(angle * 5. + time * speed + 1.0) + 1.0) / 2.0;
     float noiseL5 = (sin(pos.y * 1.0 + time + 1.0) + 1.0) / 2.0;
-    float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
+    float noiseL6 = (sin(angle * 7.0 - pos.y * 3.0 + time * 0.5) + 1.0) / 2.0 * strengthL0;
+    float noiseL7 = (sin(angle * 3.0 + time * speed * 0.5 + 1.0) + 1.0) / 2.0;
+    float noiseL8 = (sin(pos.y * 1.5 + time * 1.5 + 1.0) + 1.0) / 2.0;
+
+    float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5 + noiseL6 * noiseL7 * noiseL8) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
+
     vec2 verticalWave = vec2(noise) * direction*2.;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y - verticalWave.y * 0.9, pos.z - verticalWave.y, 1.);
     vec3 newPosition = position;
