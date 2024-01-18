@@ -138,8 +138,8 @@ void main() {
     #include <project_vertex>
 
     float speed = 1.;
-    float strengthL0 = 0.5;
-    float posStrength = 0.7;
+    float strengthL0 = .3;
+    float posStrength = 1.5;
     vUv = uv;
 
     vec3 pos1 = position;
@@ -172,7 +172,7 @@ void main() {
     float noiseL5 = (sin(pos.y * 1.0 + time + 1.0) + 1.0) / 2.0;
     float noise = (noiseL0 * noiseL1 * noiseL2 + noiseL3 * noiseL4 * noiseL5) * (1.0 - abs(dot(sphereNormal, vec3(0.0, 1.0, 0.0))));
     vec2 verticalWave = vec2(noise) * direction*2.;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y, pos.z - verticalWave.y, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x - verticalWave.x, pos.y - verticalWave.y * 0.9, pos.z - verticalWave.y, 1.);
     vec3 newPosition = position;
     vec4 modelPosition = vec4(newPosition, 1.0);
 

@@ -95,18 +95,18 @@ bubblesTl
 ScrollTrigger.create({
   trigger: canvasWrapper,
   pin: true,
-  end: "700%",
+  end: "400%",
   markers: false,
   onUpdate: (self) => {
     const progress = self.progress;
     targetRotation = progress * (Math.PI / 2);
-    transProgress = Math.min(1, progress * 2.5);
+    transProgress = Math.min(1, progress * 3.5);
     opacity = Math.min(1, progress * 8);
     if (material) {
       material.uniforms.progress.value = transProgress;
       material.uniforms.opacity.value = opacity;
     }
-    if (progress > 0.4 && progress < 0.95) {
+    if (progress > 0.2 && progress < 0.95) {
       const fadeProgress = (progress - 0.4) / 0.5;
       bubblesTl.progress(fadeProgress);
     }
@@ -163,16 +163,6 @@ spotLight.position.set(2, 2, 2);
 spotLight.angle = 0.1;
 spotLight.penumbra = 1;
 scene.add(spotLight);
-
-function createRandomParticle() {
-  return {
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    size: Math.random() * 5 + 1, // Size between 1 and 6
-    speedX: Math.random() * 3 - 1.5, // Speed between -1.5 and 1.5
-    speedY: Math.random() * 3 - 1.5,
-  };
-}
 
 const getPointsOnModel = (modal) => {
   const data = new Float32Array(3 * SIZE * SIZE + 2000);
