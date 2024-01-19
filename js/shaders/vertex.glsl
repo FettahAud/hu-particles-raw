@@ -133,6 +133,12 @@ float sampleColor(float time, vec3 position, float pointsCount) {
     return 0.0;
 }
 
+float sint(float low, float high) {
+  float t = sin(time*2.);
+  float tall = high - low;
+  return tall / 2. * t + tall / 2. + low;
+}
+
 void main() {
     #include <begin_vertex>
     #include <project_vertex>
@@ -144,6 +150,7 @@ void main() {
 
     vec3 pos1 = position;
     vec3 pos2 = initPos;
+    pos2.y *= sint(0.97, 1.07);
     vec3 pos = mix(pos1, pos2, progress);
     sphereNormal = normalize(pos);
 

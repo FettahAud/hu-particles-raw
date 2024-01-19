@@ -100,7 +100,8 @@ ScrollTrigger.create({
   onUpdate: (self) => {
     const progress = self.progress;
     targetRotation = progress * (Math.PI / 2);
-    transProgress = Math.min(1, progress * 3.5);
+    transProgress = Math.min(0.99, progress * 3.5);
+
     opacity = Math.min(1, progress * 8);
     if (material) {
       material.uniforms.progress.value = transProgress;
