@@ -210,10 +210,11 @@ void main() {
     float dist = 1.5;
 
     vec4 noiseColorModifier = vec4(1.0 - noise);
-    vec4 color1 = vec4(0.0, 1.0, 1.0, .7); // cyan
+    vec4 color1 = vec4(0.31,0.275,0.898, .7); // cyan
     vec4 color2 = vec4(0.5, 0.5, 0.5, .5); // gray
 
     color = mix(color1, color2, 1.0 - pow(min(abs(noiseValue * dist), 1.), 10.));    
 
 
 }
+    

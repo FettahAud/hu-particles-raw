@@ -44,7 +44,7 @@ void main() {
       vec4 finalColor = mix(color, transparentColor, 1.0 - opacity);
 
         vec4 shine = vec4(vec3(specularStrength) * specular * .2,.2);
-       gl_FragColor = mix(vec4(fogColor, 1.0), finalColor+shine , fogFactor);
+       gl_FragColor = mix(vec4(fogColor, 1.0), color+shine , fogFactor);
 
 
     // gl_FragColor = finalColor;
