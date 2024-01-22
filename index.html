@@ -52,12 +52,41 @@
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
       }
       section {
-        height: 100vh;
+        /* height: 100vh; */
         background-color: black;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+      section header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+        padding: 80px 0;
+        margin: 0 auto;
+        max-width: 55%;
+      }
+      section h1 {
+        color: #ebebf7;
+        text-align: center;
+        font-family: Inter;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 55px; /* 114.583% */
+      }
+      section p {
+        color: #9ca3af;
+        text-align: center;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 25px; /* 156.25% */
       }
       .bubble-1 {
         top: 26%;
@@ -97,7 +126,17 @@
     <title>Hue particles</title>
   </head>
   <body>
-    <section class="section first-section">Hello People</section>
+    <section class="section first-section">
+      <header>
+        <h1>This AI Sales Strategist is trained to be your perfect wingman</h1>
+        <p>
+          HappySales helps you better understand every prospect, identify the
+          best way in, and automate email and other communication. So that your
+          reps go into every conversation and demo with the confidence to bag
+          yet another win.
+        </p>
+      </header>
+    </section>
     <div class="canvas-wrapper">
       <canvas id="canvas"></canvas>
       <div class="question question-1">
