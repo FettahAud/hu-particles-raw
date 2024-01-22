@@ -135,6 +135,7 @@ window.addEventListener("load", function () {
   camera.position.set(0, 0, 15);
   if (window.innerWidth < 768) {
     camera.fov = 30;
+    camera.updateProjectionMatrix();
     console.log(camera);
   }
   // else camera.fov = 2.981;
@@ -153,23 +154,12 @@ window.addEventListener("load", function () {
 
     // Update camera
     // camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
 
-    // if (window.innerWidth < 768) camera.fov = 30;
-    // else camera.fov = 12.981;
+    if (window.innerWidth < 768) camera.fov = 30;
+    else camera.fov = 12.981;
 
     camera.aspect = window.innerWidth / window.innerHeight;
-
-    if (camera.aspect > planeAspectRatio) {
-      // window too large
-      const cameraHeight = Math.tan(MathUtils.degToRad(fov / 2));
-      const ratio = camera.aspect / planeAspectRatio;
-      const newCameraHeight = cameraHeight / ratio;
-      camera.fov = MathUtils.radToDeg(Math.atan(newCameraHeight)) * 2;
-    } else {
-      // window too narrow
-      camera.fov = 12.981;
-    }
+    camera.updateProjectionMatrix();
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height);

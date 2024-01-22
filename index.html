@@ -76,6 +76,40 @@
         align-items: center;
         justify-content: center;
       }
+      .bubble-1 {
+        top: 26%;
+        left: 17%;
+      }
+      .bubble-2 {
+        top: 38%;
+        left: 70%;
+      }
+      .bubble-3 {
+        top: 36%;
+        left: 17%;
+      }
+      .bubble-4 {
+        top: 48%;
+        left: 70%;
+      }
+      @media screen and (max-width: 768px) {
+        .bubble-1 {
+          top: 26%;
+          left: 2%;
+        }
+        .bubble-2 {
+          top: 45%;
+          left: 30%;
+        }
+        .bubble-3 {
+          top: 36%;
+          left: 2%;
+        }
+        .bubble-4 {
+          top: 55%;
+          left: 30%;
+        }
+      }
     </style>
     <title>Hue particles</title>
   </head>
@@ -84,13 +118,13 @@
     <div class="canvas-wrapper">
       <canvas id="canvas"></canvas>
       <div class="question question-1">
-        <div class="bubble bubble-1" style="top: 26%; left: 17%">
+        <div class="bubble bubble-1">
           <div class="text-bubble">
             Joe: <br />
             Should I engage this prospect
           </div>
         </div>
-        <div class="bubble bubble-2" style="top: 38%; left: 70%">
+        <div class="bubble bubble-2">
           <div class="text-bubble">
             🤖: <br />
             Yes its from Ideal customer profile
@@ -98,13 +132,13 @@
         </div>
       </div>
       <div class="question question-2">
-        <div class="bubble bubble-3" style="top: 36%; left: 17%">
+        <div class="bubble bubble-3">
           <div class="text-bubble">
             Mark: <br />
             Tell me more about the prospect
           </div>
         </div>
-        <div class="bubble bubble-4" style="top: 48%; left: 70%">
+        <div class="bubble bubble-4">
           <div class="text-bubble">
             🤖: <br />
             Have shared the prospect insights
