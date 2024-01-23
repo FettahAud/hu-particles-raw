@@ -22,97 +22,68 @@ window.addEventListener("load", function () {
     opacity = 0;
   const canvas = document.getElementById("canvas");
   const canvasWrapper = document.querySelector(".canvas-wrapper");
+  const questions = document.querySelectorAll(".question");
 
   const bubblesTl = gsap.timeline({
     paused: true,
   });
-  bubblesTl
-    .fromTo(
-      ".bubble-1",
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.25,
-      }
-    )
-    .fromTo(
-      ".bubble-2",
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.25,
-      }
-    )
-    .to(
-      ".question-1",
-      {
-        opacity: 0,
-        y: -100,
-        duration: 0.5,
-      },
-      "+=0.25"
-    )
-    .fromTo(
-      ".bubble-3",
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.25,
-      }
-    )
-    .fromTo(
-      ".bubble-4",
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.25,
-      }
-    )
-    .to(
-      ".question-2",
-      {
-        opacity: 0,
-        y: -100,
-        duration: 0.5,
-      },
-      "+=.25"
-    );
+
+  questions.forEach((question) => {
+    const bubbles = question.querySelectorAll(".bubble");
+    bubblesTl
+      .fromTo(
+        bubbles[0],
+        {
+          opacity: 0,
+          y: 100,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.25,
+        }
+      )
+      .fromTo(
+        bubbles[1],
+        {
+          opacity: 0,
+          y: 100,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.25,
+        }
+      )
+      .to(
+        question,
+        {
+          opacity: 0,
+          y: -100,
+          duration: 0.5,
+        },
+        "+=.5"
+      );
+  });
 
   ScrollTrigger.create({
     trigger: canvasWrapper,
     pin: true,
-    end: "400%",
+    end: `${questions.length * 100}%`,
     markers: false,
     onUpdate: (self) => {
       const progress = self.progress;
       targetRotation = progress * (Math.PI / 2);
-      transProgress = Math.min(0.99, progress * 3.5);
+      transProgress = Math.min(0.99, (progress / 50) * questions.length * 100);
+      if (transProgress === 0.98) minProg = progress;
 
       opacity = Math.min(1, progress * 8);
       if (material) {
         material.uniforms.progress.value = transProgress;
         material.uniforms.opacity.value = opacity;
       }
-      if (progress > 0.2 && progress < 0.95) {
-        const fadeProgress = (progress - 0.4) / 0.5;
-        bubblesTl.progress(fadeProgress);
-      }
+      const fadeProgress = ((progress - 0.075) * 1) / (1 - 0.075);
+      bubblesTl.progress(fadeProgress);
     },
   });
 
