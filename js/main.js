@@ -8,24 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import modelPos from "./modelPos.json";
 import modelPosIndex from "./modelPosIndex.json";
 
-const calculateRem = () => {
-  if (window.innerWidth > 1920 || window.innerWidth <= 375) {
-    document.documentElement.style.fontSize = "16px";
-    return;
-  }
-  let rem = 16;
-  if (window.innerWidth > 1280) {
-    rem = (16 / 1920) * window.innerWidth;
-  } else if (window.innerWidth > 768) {
-    rem = (16 / 1280) * window.innerWidth;
-  } else if (window.innerWidth > 375) {
-    rem = (16 / 768) * window.innerWidth;
-  }
-  document.documentElement.style.fontSize = `${rem}px`;
-};
-
 window.addEventListener("load", function () {
-  calculateRem();
   gsap.registerPlugin(ScrollTrigger);
 
   const SIZE = 124 * 2;
