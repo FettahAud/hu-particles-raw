@@ -74,15 +74,6 @@ window.addEventListener("load", function () {
         ease: "power3.out",
       }
     )
-      .to(
-        questionBubbles,
-        {
-          scale: 0,
-          stagger: 0.15,
-          ease: "power3.in",
-        },
-        "+=1"
-      )
       .fromTo(
         answerBubbles,
         {
@@ -96,7 +87,7 @@ window.addEventListener("load", function () {
         "-=.25"
       )
       .to(
-        answerBubbles,
+        [questionBubbles, answerBubbles],
         {
           scale: 0,
           stagger: 0.15,
