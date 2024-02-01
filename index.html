@@ -36,20 +36,20 @@
       }
       .bubble {
         position: absolute;
-        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        transition: opacity 0.3s ease-in-out;
       }
       .text-bubble {
         padding: 1rem;
         border-radius: 1rem;
         color: #fff;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: bold;
         background-color: #4f46e599;
         -webkit-backdrop-filter: blur(30px);
         backdrop-filter: blur(30px);
-        max-width: 230px;
+        max-width: 14.375rem;
         text-wrap: wrap;
-        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        transition: opacity 0.3s ease-in-out;
       }
       section {
         /* height: 100vh; */
@@ -64,9 +64,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 24px;
+        gap: 1.5rem;
         align-self: stretch;
-        padding: 80px 0;
+        padding: 5rem 0;
         margin: 0 auto;
         max-width: 55%;
       }
@@ -74,30 +74,25 @@
         color: #ebebf7;
         text-align: center;
         font-family: Inter;
-        font-size: 48px;
+        font-size: 5rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 55px; /* 114.583% */
+        line-height: 5.1rem; /* 114.583% */
       }
       section p {
         color: #9ca3af;
         text-align: center;
         font-family: Inter;
-        font-size: 16px;
+        font-size: 1rem;
         font-style: normal;
         font-weight: 400;
-        line-height: 25px; /* 156.25% */
+        line-height: 1.6rem;
       }
       .bubble {
-        opacity: 0;
-      }
-      .question .bubble:first-of-type {
-        top: 26%;
-        left: 17%;
-      }
-      .question .bubble:last-of-type {
-        top: 38%;
-        left: 70%;
+        /* animation: scale 2s cubic-bezier(0.42, 0.87, 0, 1.1) backwards; */
+        /* animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-delay: calc(var(--animation-order) * 800ms); */
       }
       @media screen and (max-width: 768px) {
         .question .bubble:first-of-type {
@@ -109,6 +104,16 @@
           left: 30%;
         }
       }
+      /* @keyframes scale {
+        0%,
+        25% {
+          transform: scale(0);
+        }
+        75%,
+        100% {
+          transform: scale(1);
+        }
+      } */
     </style>
     <title>Hue particles</title>
   </head>
@@ -120,115 +125,65 @@
     </section>
     <div class="canvas-wrapper">
       <canvas id="canvas"></canvas>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Joe: <br />
-            Should I engage this prospect
+      <div class="set">
+        <div class="question">
+          <div class="bubble question-bubble" style="top: 26%; left: 20%">
+            <div class="text-bubble">
+              Joe: <br />
+              Should I reach out to Mike from TotalEngage?
+            </div>
+          </div>
+          <div class="bubble answer-bubble" style="top: 38%; left: 30%">
+            <div class="text-bubble">
+              AI: <br />
+              Yes, Totalengage falls under your ICP and Mike fits the buyer
+              persona.
+            </div>
           </div>
         </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Yes its from Ideal customer profile
+        <div class="question">
+          <div class="bubble question-bubble" style="top: 30%; left: 58%">
+            <div class="text-bubble">
+              Mark: <br />
+              How should I engage Mike Davis from TotalEngage?
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            Tell me more about the prospect
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Have shared the prospect insights
-          </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            How do i communicate with the prospect
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Have shared the communication dos & don'ts for the personality
+          <div class="bubble answer-bubble" style="top: 50%; left: 65%">
+            <div class="text-bubble">
+              AI: <br />
+              Mike's DISC profile suggests you get to the point straight
+            </div>
           </div>
         </div>
       </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            Share what are the challenges of this customer
+      <div class="set">
+        <div class="question">
+          <div class="bubble question-bubble" style="top: 26%; left: 20%">
+            <div class="text-bubble">
+              Sarah: <br />
+              What does Acme do?
+            </div>
+          </div>
+          <div class="bubble answer-bubble" style="top: 38%; left: 30%">
+            <div class="text-bubble">
+              AI: <br />
+              Acme is a large-scale reliability monitoring.....
+            </div>
           </div>
         </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Have shared the talking points and pitch
+        <div class="question">
+          <div class="bubble question-bubble" style="top: 30%; left: 58%">
+            <div class="text-bubble">
+              Mark: <br />
+              Give me a call script for Sheila Owens
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            Can you help me practice the pitch
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Yes talk to me and Ill share the feedback too
-          </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            Send me personalized emails
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Yes they are shared
-          </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            What are their strategic initiatives
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            Shared initiatives from their latest annual report
-          </div>
-        </div>
-      </div>
-      <div class="question">
-        <div class="bubble">
-          <div class="text-bubble">
-            Mark: <br />
-            How i open the conversation with the customer
-          </div>
-        </div>
-        <div class="bubble">
-          <div class="text-bubble">
-            AI: <br />
-            I have shared the icebreakers with you
+          <div class="bubble answer-bubble" style="top: 50%; left: 65%">
+            <div class="text-bubble">
+              AI: <br />
+              Here is a sales call script created with Challenger Sales
+              methodology
+            </div>
           </div>
         </div>
       </div>

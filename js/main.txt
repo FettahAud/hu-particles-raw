@@ -8,24 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import modelPos from "./modelPos.json";
 import modelPosIndex from "./modelPosIndex.json";
 
-const calculateRem = () => {
-  if (window.innerWidth > 1920 || window.innerWidth <= 375) {
-    document.documentElement.style.fontSize = "16px";
-    return;
-  }
-  let rem = 16;
-  if (window.innerWidth > 1280) {
-    rem = (16 / 1920) * window.innerWidth;
-  } else if (window.innerWidth > 768) {
-    rem = (16 / 1280) * window.innerWidth;
-  } else if (window.innerWidth > 375) {
-    rem = (16 / 768) * window.innerWidth;
-  }
-  document.documentElement.style.fontSize = `${rem}px`;
-};
-
 window.addEventListener("load", function () {
-  calculateRem();
   gsap.registerPlugin(ScrollTrigger);
 
   const SIZE = 124 * 2;
@@ -40,74 +23,47 @@ window.addEventListener("load", function () {
   const canvas = document.getElementById("canvas");
   const canvasWrapper = document.querySelector(".canvas-wrapper");
   const questions = document.querySelectorAll(".question");
-  const sets = document.querySelectorAll(".set");
 
-  const tl = gsap.timeline({
+  const bubblesTl = gsap.timeline({
     paused: true,
-    defaults: {
-      duration: 1,
-      repeatRefresh: true,
-    },
-    onComplete: () => {
-      tl.restart();
-    },
-  });
-  const hideTl = gsap.timeline({
-    paused: true,
-    defaults: {
-      duration: 0.25,
-    },
   });
 
-  sets.forEach((set) => {
-    const questionBubbles = set.querySelectorAll(".question-bubble");
-    const answerBubbles = set.querySelectorAll(".answer-bubble");
-
-    tl.fromTo(
-      questionBubbles,
-      {
-        scale: 0,
-      },
-      {
-        scale: 1,
-        stagger: 0.3,
-        ease: "power3.out",
-      }
-    )
-      .to(
-        questionBubbles,
+  questions.forEach((question) => {
+    const bubbles = question.querySelectorAll(".bubble");
+    bubblesTl
+      .fromTo(
+        bubbles[0],
         {
-          scale: 0,
-          stagger: 0.15,
-          ease: "power3.in",
+          opacity: 0,
+          y: 100,
         },
-        "+=1"
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.25,
+        }
       )
       .fromTo(
-        answerBubbles,
+        bubbles[1],
         {
-          scale: 0,
+          opacity: 0,
+          y: 100,
         },
         {
-          scale: 1,
-          stagger: 0.3,
-          ease: "power3.out",
-        },
-        "-=.25"
+          opacity: 1,
+          y: 0,
+          duration: 0.25,
+        }
       )
       .to(
-        answerBubbles,
+        question,
         {
-          scale: 0,
-          stagger: 0.15,
-          ease: "power3.in",
+          opacity: 0,
+          y: -100,
+          duration: 0.5,
         },
-        "+=1"
+        "+=.5"
       );
-  });
-  hideTl.to(".set", {
-    opacity: 0,
-    ease: "power3.in",
   });
 
   ScrollTrigger.create({
@@ -122,19 +78,12 @@ window.addEventListener("load", function () {
       if (transProgress === 0.98) minProg = progress;
 
       opacity = Math.min(1, progress * 8);
-      if (transProgress > 0.98) {
-        hideTl.reverse();
-        tl.play();
-      } else {
-        tl.pause();
-        hideTl.play();
-      }
       if (material) {
         material.uniforms.progress.value = transProgress;
         material.uniforms.opacity.value = opacity;
       }
       const fadeProgress = ((progress - 0.075) * 1) / (1 - 0.075);
-      // bubblesTl.progress(fadeProgress);
+      bubblesTl.progress(fadeProgress);
     },
   });
 
