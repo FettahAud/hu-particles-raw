@@ -43,22 +43,22 @@ window.addEventListener("load", function () {
   });
 
   sets.forEach((set) => {
+    const wrapper = set.querySelectorAll(".question");
     const questionBubbles = set.querySelectorAll(".question-bubble");
     const answerBubbles = set.querySelectorAll(".answer-bubble");
-
-    tl.fromTo(
-      questionBubbles,
-      {
-        scale: 0,
-      },
-      {
-        scale: 1,
-        stagger: 0.3,
-        ease: "power3.out",
-      }
-    )
-      .fromTo(
-        answerBubbles,
+    wrapper.forEach((question) => {
+      tl.fromTo(
+        question.querySelector(".question-bubble"),
+        {
+          scale: 0,
+        },
+        {
+          scale: 1,
+          stagger: 1,
+          ease: "power3.out",
+        }
+      ).fromTo(
+        question.querySelector(".answer-bubble"),
         {
           scale: 0,
         },
@@ -68,16 +68,17 @@ window.addEventListener("load", function () {
           ease: "power3.out",
         },
         "-=.25"
-      )
-      .to(
-        [questionBubbles, answerBubbles],
-        {
-          scale: 0,
-          stagger: 0.15,
-          ease: "power3.in",
-        },
-        "+=1"
       );
+    });
+    tl.to(
+      [questionBubbles, answerBubbles],
+      {
+        scale: 0,
+        stagger: 0.15,
+        ease: "power3.in",
+      },
+      "+=1.5"
+    );
   });
   hideTl.to(".set", {
     opacity: 0,
