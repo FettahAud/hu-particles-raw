@@ -88,12 +88,12 @@ window.addEventListener("load", function () {
   ScrollTrigger.create({
     trigger: canvasWrapper,
     pin: true,
-    end: `${questions.length * 100}%`,
+    end: "200%",
     markers: false,
     onUpdate: (self) => {
       const progress = self.progress;
       targetRotation = progress * (Math.PI / 2);
-      transProgress = Math.min(0.99, (progress / 50) * questions.length * 100);
+      transProgress = Math.min(0.99, (progress / 50) * 100);
       if (transProgress === 0.98) minProg = progress;
 
       opacity = Math.min(1, progress * 8);
